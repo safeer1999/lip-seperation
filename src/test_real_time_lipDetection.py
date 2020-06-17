@@ -72,8 +72,8 @@ white       = "#ffffff"
 lightBlue2  = "#adc5ed"
 font        = "Constantia"
 fontButtons = (font, 12)
-maxWidth    = 800
-maxHeight   = 480
+maxWidth    = 1200
+maxHeight   = 600
 
 #Graphics window
 mainWindow = tk.Tk()
@@ -107,7 +107,7 @@ def displayFrame(model,frame_num,input_sequence):
     displayFrame_partial.__module__ = displayFrame.__module__
 
     cv2image   = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
-    img   = Image.fromarray(cv2image).resize((500, 500))
+    img   = Image.fromarray(cv2image).resize((500, 400))
     imgtk = ImageTk.PhotoImage(image = img)
     lmain.imgtk = imgtk
     lmain.configure(image=imgtk)
