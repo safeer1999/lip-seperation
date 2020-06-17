@@ -88,6 +88,10 @@ mainFrame.place(x=20, y=20)
 lmain = tk.Label(mainFrame)
 lmain.grid(row=0, column=0)
 
+closeButton = Button(mainWindow, text = "CLOSE", font = fontButtons, bg = white, width = 20, height= 1)
+closeButton.configure(command= lambda: mainWindow.destroy())              
+closeButton.place(x=270,y=430)	
+
 cap = cv2.VideoCapture(0)
 frames = []
 
@@ -499,9 +503,6 @@ def test_video(video_path, shape_predictor_file, model):
                 break
             img = imresize(img, (256, 320))
             frames.append(img)'''
-        closeButton = Button(mainWindow, text = "CLOSE", font = fontButtons, bg = white, width = 20, height= 1)
-        closeButton.configure(command= lambda: mainWindow.destroy())              
-        closeButton.place(x=270,y=430)	
         show_frame()  #Display
         mainWindow.mainloop()  #Starts GUI
 

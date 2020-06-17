@@ -1,5 +1,6 @@
 import datetime
 import argparse
+from functools import partial 
 
 from keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
 from keras.utils import to_categorical
@@ -67,12 +68,12 @@ y_val = []
 X_test = []
 y_test = []
 
-white 		= "#ffffff"
-lightBlue2 	= "#adc5ed"
-font 		= "Constantia"
+white       = "#ffffff"
+lightBlue2  = "#adc5ed"
+font        = "Constantia"
 fontButtons = (font, 12)
-maxWidth  	= 800
-maxHeight 	= 480
+maxWidth    = 800
+maxHeight   = 480
 
 #Graphics window
 mainWindow = tk.Tk()
@@ -88,21 +89,29 @@ mainFrame.place(x=20, y=20)
 lmain = tk.Label(mainFrame)
 lmain.grid(row=0, column=0)
 
-# cap = cv2.VideoCapture(0)
+closeButton = Button(mainWindow, text = "CLOSE", font = fontButtons, bg = white, width = 20, height= 1)
+closeButton.configure(command= lambda: mainWindow.destroy())              
+closeButton.place(x=270,y=430)  
+cap = cv2.VideoCapture(0)
 # frames = []
 
-def show_frame():
+def displayFrame(model,frame_num,input_sequence):
 
-	ret,frame = cap.read()
-	cv2image   = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+    ret,frame = cap.read()
+    frame = imresize(frame, (256, 320))
+    img = frame.copy()
+    img,img_flag = predict_state(img,frame,input_sequence,frame_num,model)
 
-	img   = Image.fromarray(cv2image).resize((500, 500))
-	imgtk = ImageTk.PhotoImage(image = img)
-	lmain.imgtk = imgtk
-	lmain.configure(image=imgtk)
-	lmain.after(10, show_frame)
+    displayFrame_partial = partial(displayFrame,model,frame_num+1,input_sequence)
+    displayFrame_partial.__name__ = "displayFrame_partial"
+    displayFrame_partial.__module__ = displayFrame.__module__
 
-	frames.append(imresize(frame,(256,320)))
+    cv2image   = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
+    img   = Image.fromarray(cv2image).resize((500, 500))
+    imgtk = ImageTk.PhotoImage(image = img)
+    lmain.imgtk = imgtk
+    lmain.configure(image=imgtk)
+    lmain.after(10, displayFrame_partial)
 
 
 
@@ -564,41 +573,17 @@ def test_video(video_path, shape_predictor_file, model):
             img = cv2.imread(os.path.join(video_path, frame_name))
             img = imresize(img, (256, 320))
             frames.append(img)
-
-    else :
-        pass        
-
-        '''for i in range(1000):
-            ret, img = cap.read()
-            cv2.imshow('Video', img)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-            img = imresize(img, (256, 320))
-            frames.append(img)
-        closeButton = Button(mainWindow, text = "CLOSE", font = fontButtons, bg = white, width = 20, height= 1)
-        closeButton.configure(command= lambda: mainWindow.destroy())              
-        closeButton.place(x=270,y=430)	
-        show_frame()  #Display
-        mainWindow.mainloop()  #Starts GUI'''
-
-
-    #print('Fetched ' + str(len(frames)) + ' frames from the video.')
     
-
-    
-
     frame_num = 0
     input_sequence = []
-    cap = cv2.VideoCapture(0)
-    while True:
+    #cap = cv2.VideoCapture(0)
+    '''while True:
         ret,frame = cap.read()
         frame = imresize(frame, (256, 320))
 
         img = frame.copy()
 
         img,img_flag = predict_state(img,frame,input_sequence,frame_num,model)
-        if not img_flag:
-            continue
 
         cv2.imshow('Video', img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -611,7 +596,12 @@ def test_video(video_path, shape_predictor_file, model):
 
     # When everything done, release the capture
     cap.release()
-    cv2.destroyAllWindows()
+    cv2.destroyAllWindows()'''
+
+    displayFrame(model,frame_num,input_sequence)
+    mainWindow.mainloop()
+
+
 
 
 def get_facial_landmark_vectors_from_frame(frame):
