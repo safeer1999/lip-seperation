@@ -69,21 +69,39 @@ X_test = []
 y_test = []
 
 white       = "#ffffff"
-COLOUR  = "#262828"
-font        = "Calibri"
+BGcolour  = "#262828"
+DESCcolour = "#131414"
+font        = "Arial"
+fontHeading = (font, 30, 'bold')
 fontButtons = (font, 12)
-maxWidth    = 1200
+fontDesc    = (font, 10)
+maxWidth    = 545
 maxHeight   = 600
+
+
+
 
 #Graphics window
 mainWindow = tk.Tk()
-mainWindow.configure(bg=COLOUR)
+mainWindow.title("Speech Detector")
+mainWindow.configure(bg=BGcolour)
 mainWindow.geometry('%dx%d+%d+%d' % (maxWidth,maxHeight,0,0))
 mainWindow.resizable(0,0)
 # mainWindow.overrideredirect(1)
-
 mainFrame = Frame(mainWindow)
-mainFrame.place(x=20, y=20)                
+mainFrame.place(x=20, y=80)    
+
+#heading
+heading=tk.Label(mainWindow, text="Binary Speech Classifier", bg=BGcolour, font=fontHeading, fg=white)
+heading.grid(column = 0, row=0)
+heading.place(x=20, y=20)
+
+#description
+descr=tk.Label(mainWindow, justify='left',text="Look into your webcam and speak normally in intervals. A bounding box should appear \naround your face with a classification prediction on whether you're speaking or not.", bg=DESCcolour, font=fontDesc, fg=white)
+descr.grid(column = 0, row=0)
+descr.place(x=20, y=490)
+
+            
 
 #Capture video frames
 lmain = tk.Label(mainFrame)
@@ -91,7 +109,7 @@ lmain.grid(row=0, column=0)
 
 closeButton = Button(mainWindow, text = "EXIT", font = fontButtons, bg = white, width = 20, height= 1)
 closeButton.configure(command= lambda: mainWindow.destroy())              
-closeButton.place(x=20,y=430)  
+closeButton.place(x=20,y=530)  
 cap = cv2.VideoCapture(0)
 # frames = []
 
