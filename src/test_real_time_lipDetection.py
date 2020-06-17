@@ -69,15 +69,15 @@ X_test = []
 y_test = []
 
 white       = "#ffffff"
-lightBlue2  = "#adc5ed"
-font        = "Constantia"
+COLOUR  = "#262828"
+font        = "Calibri"
 fontButtons = (font, 12)
 maxWidth    = 1200
 maxHeight   = 600
 
 #Graphics window
 mainWindow = tk.Tk()
-mainWindow.configure(bg=lightBlue2)
+mainWindow.configure(bg=COLOUR)
 mainWindow.geometry('%dx%d+%d+%d' % (maxWidth,maxHeight,0,0))
 mainWindow.resizable(0,0)
 # mainWindow.overrideredirect(1)
@@ -89,9 +89,9 @@ mainFrame.place(x=20, y=20)
 lmain = tk.Label(mainFrame)
 lmain.grid(row=0, column=0)
 
-closeButton = Button(mainWindow, text = "CLOSE", font = fontButtons, bg = white, width = 20, height= 1)
+closeButton = Button(mainWindow, text = "EXIT", font = fontButtons, bg = white, width = 20, height= 1)
 closeButton.configure(command= lambda: mainWindow.destroy())              
-closeButton.place(x=270,y=430)  
+closeButton.place(x=20,y=430)  
 cap = cv2.VideoCapture(0)
 # frames = []
 
