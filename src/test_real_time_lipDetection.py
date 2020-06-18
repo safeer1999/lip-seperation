@@ -72,6 +72,7 @@ white       = "#ffffff"
 BGcolour  = "#262828"
 DESCcolour = "#131414"
 font        = "Courier"
+if os.name=='nt': font ="Arial" #check if os is windows, change font to allow functionaility
 fontHeading = (font, 30, 'bold')
 fontButtons = (font, 12)
 fontDesc    = (font, 10)
